@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SpecialFriends</string>
+    <string name="facebook_app_id">1874933972566991</string>
+    <string name="fb_login_protocol_scheme">fb1874933972566991</string>
+    <string name="text_your_search">Buscar</string>
+    <string name="name_user">Name</string>
+    <string name="birthday_user">Birthday</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="notes_user">Notes</string>
+    <string name="save_button_text">SAVE</string>
+</resources>
