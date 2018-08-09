@@ -44,7 +44,6 @@ public class UserListViewModel extends AndroidViewModel {
         super(application);
         appDatabase = AppDatabase.getDatabase(this.getApplication());
         itemAndPersonList = appDatabase.itemAndPersonModel().getAllUserItems();
-        getFriendList();
     }
 
     public LiveData<List<UserModel>> getItemAndPersonList() {
@@ -91,7 +90,10 @@ public class UserListViewModel extends AndroidViewModel {
                                                     usermodel.set_imgURL(url.toString());
                                                 }
 
-                                                addUser(usermodel);
+                                                UserModel _usermodel = new DataBaseHandler.getUserAsyncTask(appDatabase).execute(usermodel._id).get();
+                                                if(_usermodel == null){
+                                                    addUser(usermodel);
+                                                }
                                             }
                                         }
 

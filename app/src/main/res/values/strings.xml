@@ -8,4 +8,5 @@
     <string name="phone_number">Phone Number</string>
     <string name="notes_user">Notes</string>
     <string name="save_button_text">SAVE</string>
+    <string name="name_dummy_text">Name</string>
 </resources>

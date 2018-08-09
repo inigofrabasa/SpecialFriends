@@ -2,7 +2,10 @@ package mx.inigofr.specialfriends.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +45,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         viewModel.getItemAndPersonList().observe(MainActivity.this, new Observer<List<UserModel>>() {
             @Override
             public void onChanged(@Nullable List<UserModel> itemAndPeople) {
+
+                if(itemAndPeople.size() == 0){
+                    viewModel.getFriendList();
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    recyclerViewFavorites.setVisibility(View.VISIBLE);
+                }
+
                 usersAdapter.addItems(itemAndPeople);
                 favoritesAdapter.addItems(itemAndPeople);
             }
@@ -88,5 +100,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onSearch(View view) {
 
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

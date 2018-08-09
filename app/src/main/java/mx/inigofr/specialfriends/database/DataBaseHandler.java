@@ -66,7 +66,10 @@ public class DataBaseHandler {
 
         @Override
         protected UserModel doInBackground(final String... params) {
+            try{
             return db.itemAndPersonModel().getUserbyId(params[0]);
+            } catch (NullPointerException ex){ }
+            return null;
         }
 
     }

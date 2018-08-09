@@ -81,6 +81,8 @@ public class UserActivity extends AppCompatActivity {
                         _userModel.set_birthday(birthday);
 
                     viewModel.updateUser(_userModel);
+
+                    Toast.makeText(UserActivity.this, "Friend saved!", Toast.LENGTH_LONG).show();
                 }
             }
         });
