@@ -12,8 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private UsersAdapter usersAdapter;
     private FavoritesAdapter favoritesAdapter;
     private ProgressBar progressBar;
+    private TextView userNameHeader;
 
     private RecyclerView recyclerView;
     private RecyclerView recyclerViewFavorites;
@@ -39,6 +42,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         progressBar = findViewById(R.id.indeterminateBar);
+
+        showToolbar("", false);
+        userNameHeader = (TextView) findViewById(R.id.tv_name_user);
+        userNameHeader.setText(getIntent().getStringExtra("name_user"));
 
         progressBar.setVisibility(View.VISIBLE);
         viewModel = ViewModelProviders.of(this).get(UserListViewModel.class);
@@ -107,5 +114,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public void showToolbar(String tittle, boolean upButton){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.w_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(tittle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
     }
 }

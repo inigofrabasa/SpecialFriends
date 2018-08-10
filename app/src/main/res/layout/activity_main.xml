@@ -88,6 +88,7 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/recyclerViewFavorites"
         >
+
     </android.support.v7.widget.RecyclerView>
 
     <ProgressBar

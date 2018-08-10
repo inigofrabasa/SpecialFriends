@@ -8,8 +8,14 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphRequestBatch;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import mx.inigofr.specialfriends.R;
 
@@ -18,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     CallbackManager callbackManager;
     LoginButton loginButton;
     boolean isLoggedInFacebook = false;
+    String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +34,37 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions("email");
         statusLoginFacebook();
-        if(isLoggedIn()){
-            navigateToHome();
-        }
+
+        GraphRequestBatch batch = new GraphRequestBatch(
+                GraphRequest.newMeRequest(
+                        AccessToken.getCurrentAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+
+                                    JSONObject jsonObject,
+                                    GraphResponse response) {
+                                if(jsonObject != null){
+                                    try {
+                                        userName = jsonObject.getString("name");
+                                        if(isLoggedIn()){
+                                            navigateToHome(userName);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        })
+        );
+
+        batch.addCallback(new GraphRequestBatch.Callback() {
+            @Override
+            public void onBatchCompleted(GraphRequestBatch graphRequests) {
+                // Application code for when the batch finishes
+            }
+        });
+        batch.executeAsync();
     }
 
     @Override
@@ -45,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 if(loginResult != null){
-                    navigateToHome();
+                    navigateToHome("");
                 }
             }
 
@@ -73,8 +108,11 @@ public class LoginActivity extends AppCompatActivity {
         return false;
     }
 
-    public void navigateToHome(){
-        startActivity(new Intent(this, MainActivity.class));
+    public void navigateToHome(String name){
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("name_user", userName);
+        startActivity(intent);
     }
 
     //   void getFriendList(){
