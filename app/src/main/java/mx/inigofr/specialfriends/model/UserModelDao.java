@@ -23,6 +23,9 @@ public interface UserModelDao {
     @Query("select * from UserModel")
     LiveData<List<UserModel>> getAllUserItems();
 
+    @Query("select * from UserModel where lower(_personName) LIKE lower(:request)")
+    LiveData<List<UserModel>> getUserItemsByRequest(String request);
+
     @Query("select * from UserModel where _id = :id")
     UserModel getUserbyId(String id);
 

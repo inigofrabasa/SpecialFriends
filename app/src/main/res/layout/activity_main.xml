@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="mx.inigofr.specialfriends.view.MainActivity"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     >
 
     <include
         android:id="@+id/toolbar"
         layout="@layout/action_toolbar"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/content_search"
         xmlns:android="http://schemas.android.com/apk/res/android"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -22,55 +22,54 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:layout_below="@+id/toolbar"
+        android:weightSum="10"
         >
 
-        <LinearLayout
-            android:id="@+id/search_bar_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <EditText
+                android:id="@+id/et_searech_term"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp">
+                android:layout_weight="8"
+                android:layout_marginStart="10dp"
+                android:ellipsize="end"
+                android:hint="@string/text_your_search"
+                android:singleLine="true"
+                android:textSize="16sp" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/search_button"
-                    android:layout_toStartOf="@+id/search_button">
-
-                    <EditText
-                        android:id="@+id/et_searech_term"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="60dp"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical"
-                        android:hint="@string/text_your_search"
-                        android:singleLine="true"
-                        android:textSize="16sp" />
-                </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/search_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:paddingEnd="2dp"
+                android:paddingStart="2dp"
+                >
 
                 <ImageView
-                    android:id="@+id/search_button"
+                    android:id="@+id/delete_search_button"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_close"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="onDeleteSearch"
+                    android:visibility="invisible"
+                    />
+
+                <ImageView
+                    android:id="@+id/search_clear"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:onClick="onSearch"
                     android:src="@drawable/ic_search"/>
 
-
-            </RelativeLayout>
-
-        </LinearLayout>
-    </RelativeLayout>
+            </LinearLayout>
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewFavorites"

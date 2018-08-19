@@ -1,6 +1,8 @@
 package mx.inigofr.specialfriends.adapter;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +38,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.RecyclerView
                 .inflate(R.layout.user_item, parent, false));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         UserModel userModel = userModelList.get(position);

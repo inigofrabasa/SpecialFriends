@@ -34,7 +34,7 @@ public class UserListViewModel extends AndroidViewModel {
     private final String linkimage_chunk_1 = "https://graph.facebook.com/";
     private final String linkimage_chunk_2 = "/picture?type=large";
 
-    private final LiveData<List<UserModel>> itemAndPersonList;
+    private LiveData<List<UserModel>> itemAndPersonList;
 
     private AppDatabase appDatabase;
 
@@ -48,6 +48,20 @@ public class UserListViewModel extends AndroidViewModel {
 
     public LiveData<List<UserModel>> getItemAndPersonList() {
         return itemAndPersonList;
+    }
+
+    public LiveData<List<UserModel>> getItemAndPersonListBySearch(String user) {
+        if(user == null || user.equals("")){
+            this.itemAndPersonList = appDatabase.itemAndPersonModel().getAllUserItems();
+            return this.itemAndPersonList;
+        }
+        else
+            this.itemAndPersonList = appDatabase.itemAndPersonModel().getUserItemsByRequest("%"+user+"%");
+            return this.itemAndPersonList;
+    }
+
+    public void getAllPeopleDB(){
+        itemAndPersonList = appDatabase.itemAndPersonModel().getAllUserItems();
     }
 
     public void deleteUser(UserModel userModel) {

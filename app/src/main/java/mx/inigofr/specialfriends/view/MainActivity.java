@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -33,9 +34,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FavoritesAdapter favoritesAdapter;
     private ProgressBar progressBar;
     private TextView userNameHeader;
+    private TextView textToSearch;
+    private ImageView deleteSearch;
 
     private RecyclerView recyclerView;
     private RecyclerView recyclerViewFavorites;
+    private Observer<List<UserModel>> mainObserver;
+    private Observer<List<UserModel>> searchObserver;
+    private String request;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +55,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         progressBar.setVisibility(View.VISIBLE);
         viewModel = ViewModelProviders.of(this).get(UserListViewModel.class);
-        viewModel.getItemAndPersonList().observe(MainActivity.this, new Observer<List<UserModel>>() {
+        viewModel.getItemAndPersonList().observe(MainActivity.this, mainObserver = new Observer<List<UserModel>>() {
             @Override
             public void onChanged(@Nullable List<UserModel> itemAndPeople) {
+                if(itemAndPeople == null)
+                    return;
 
                 if(itemAndPeople.size() == 0){
                     viewModel.getFriendList();
@@ -89,6 +97,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         recyclerViewFavorites.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerViewFavorites.setAdapter(favoritesAdapter);
+
+        textToSearch = (TextView)findViewById(R.id.et_searech_term);
+        deleteSearch = (ImageView)findViewById(R.id.delete_search_button);
     }
 
     @Override
@@ -107,6 +118,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onSearch(View view) {
 
+        if(textToSearch.getText() != null)
+            searchUser(textToSearch.getText().toString());
     }
 
     private boolean isNetworkAvailable() {
@@ -121,5 +134,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(tittle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
+    }
+
+    public void searchUser(String request){
+
+        this.request = request;
+        if(request.equals(""))
+            deleteSearch.setVisibility(View.INVISIBLE);
+        else
+            deleteSearch.setVisibility(View.VISIBLE);
+
+        viewModel.getItemAndPersonList().removeObservers(MainActivity.this);
+        viewModel.getItemAndPersonListBySearch(this.request).observe(MainActivity.this, searchObserver = new Observer<List<UserModel>>() {
+            @Override
+            public void onChanged(@Nullable List<UserModel> itemAndPeople) {
+                if(itemAndPeople == null)
+                    return;
+
+                progressBar.setVisibility(View.GONE);
+
+                usersAdapter.addItems(itemAndPeople);
+                favoritesAdapter.addItems(itemAndPeople);
+            }
+        });
+    }
+
+    public void onDeleteSearch(View view) {
+
+        textToSearch.setText("");
+        deleteSearch.setVisibility(View.INVISIBLE);
+
+        viewModel.getItemAndPersonList().removeObservers(MainActivity.this);
+        viewModel.getAllPeopleDB();
+        viewModel.getItemAndPersonList().observe(MainActivity.this, mainObserver = new Observer<List<UserModel>>() {
+            @Override
+            public void onChanged(@Nullable List<UserModel> itemAndPeople) {
+                if(itemAndPeople == null)
+                    return;
+
+                progressBar.setVisibility(View.GONE);
+
+                usersAdapter.addItems(itemAndPeople);
+                favoritesAdapter.addItems(itemAndPeople);
+            }
+        });
     }
 }
