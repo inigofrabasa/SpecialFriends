@@ -28,12 +28,14 @@ public class LoginActivity extends AppCompatActivity {
     Button fb;
     boolean isLoggedInFacebook = false;
     String userName;
+    //FrameLayout loggedFBLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //loggedFBLayout = (FrameLayout) findViewById(R.id.fl_login_fb);
         loginButton = (LoginButton) findViewById(R.id.login_button);
         fb = (Button) findViewById(R.id.fb);
 

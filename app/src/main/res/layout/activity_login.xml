@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/FrameLayout1"
+        android:layout_above="@+id/fl_login_fb"
         android:layout_alignParentTop="true"
         android:gravity="center_vertical|center_horizontal"
         >
@@ -45,10 +45,12 @@
 
 
     <FrameLayout
-        android:id="@+id/FrameLayout1"
+        android:id="@+id/fl_login_fb"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        >
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/login_button"
