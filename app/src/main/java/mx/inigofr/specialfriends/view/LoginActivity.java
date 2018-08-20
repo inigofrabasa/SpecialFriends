@@ -3,6 +3,8 @@ package mx.inigofr.specialfriends.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -23,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
     CallbackManager callbackManager;
     LoginButton loginButton;
+    Button fb;
     boolean isLoggedInFacebook = false;
     String userName;
 
@@ -32,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         loginButton = (LoginButton) findViewById(R.id.login_button);
+        fb = (Button) findViewById(R.id.fb);
+
         loginButton.setReadPermissions("email");
         statusLoginFacebook();
 
@@ -49,6 +54,8 @@ public class LoginActivity extends AppCompatActivity {
                                         userName = jsonObject.getString("name");
                                         if(isLoggedIn()){
                                             navigateToHome(userName);
+                                        } else{
+
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -112,31 +119,14 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("name_user", userName);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        finish();
     }
 
-    //   void getFriendList(){
-//        GraphRequestBatch batch = new GraphRequestBatch(
-//                GraphRequest.newMeRequest(
-//                        AccessToken.getCurrentAccessToken(),
-//                        new GraphRequest.GraphJSONObjectCallback() {
-//                            @Override
-//                            public void onCompleted(
-//                                    JSONObject jsonObject,
-//                                    GraphResponse response) {
-//                                if(jsonObject != null){
-//
-//                                }
-//                            }
-//                        })
-//        );
-//
-//        batch.addCallback(new GraphRequestBatch.Callback() {
-//            @Override
-//            public void onBatchCompleted(GraphRequestBatch graphRequests) {
-//                // Application code for when the batch finishes
-//            }
-//        });
-//        batch.executeAsync();
-//    }
+    public void onClick(View view) {
+        if (view == fb) {
+            loginButton.performClick();
+        }
+    }
 }

@@ -10,4 +10,9 @@
     <string name="save_button_text">SAVE</string>
     <string name="name_dummy_text">Name</string>
     <string name="my_name_dummy">Mi Nombre</string>
+    <string name="enter_with_facebook">Enter with FaceBook</string>
+    <string name="enter_with_facebook_text">Enter with Facebook</string>
+    <string name="welcome_text">Welcome to</string>
+    <string name="special_text">SPECIAL</string>
+    <string name="friends_text">FRIENDS</string>
 </resources>

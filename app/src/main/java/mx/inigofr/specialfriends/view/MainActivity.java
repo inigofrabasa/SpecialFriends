@@ -18,6 +18,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.login.widget.LoginButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +33,8 @@ import mx.inigofr.specialfriends.model.UserModel;
 import mx.inigofr.specialfriends.viewmodel.UserListViewModel;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    CallbackManager callbackManager;
 
     private UserListViewModel viewModel;
     private UsersAdapter usersAdapter;
@@ -43,11 +50,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Observer<List<UserModel>> searchObserver;
     private String request;
 
+    LoginButton logoutButton;
+    ImageView fb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         progressBar = findViewById(R.id.indeterminateBar);
+
+        logoutButton = (LoginButton) findViewById(R.id.logout_button);
+        fb = (ImageView) findViewById(R.id.fb_logout);
 
         showToolbar("", false);
         userNameHeader = (TextView) findViewById(R.id.tv_name_user);
@@ -100,6 +113,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         textToSearch = (TextView)findViewById(R.id.et_searech_term);
         deleteSearch = (ImageView)findViewById(R.id.delete_search_button);
+
+        callbackManager = CallbackManager.Factory.create();
     }
 
     @Override
@@ -178,5 +193,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 favoritesAdapter.addItems(itemAndPeople);
             }
         });
+    }
+
+    public void onClickLogout(View view) {
+        if (view == fb) {
+            logoutButton.performClick();
+            AccessToken accessToken = AccessToken.getCurrentAccessToken();
+            AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
+                @Override
+                protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken,
+                                                           AccessToken currentAccessToken) {
+                    if (currentAccessToken == null) {
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }
+            };
+
+        }
     }
 }
