@@ -19,6 +19,8 @@
             android:id="@+id/first_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
             android:text="@string/welcome_text"
             android:gravity="center_vertical|center_horizontal"
             />
@@ -29,6 +31,9 @@
             android:layout_height="wrap_content"
             android:text="@string/special_text"
             android:layout_below="@+id/first_txt"
+            android:textColor="@color/login_special_textcolor"
+            android:textSize="35dp"
+            android:textStyle="bold"
             android:gravity="center_vertical|center_horizontal"
             />
 
@@ -37,13 +42,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/friends_text"
+            android:textSize="50dp"
+            android:textStyle="bold"
             android:layout_below="@+id/second_txt"
             android:gravity="center_vertical|center_horizontal"
             />
 
     </RelativeLayout>
-
-
     <FrameLayout
         android:id="@+id/fl_login_fb"
         android:layout_alignParentBottom="true"
@@ -64,11 +69,15 @@
 
         <Button
             android:id="@+id/fb"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:onClick="onClick"
             android:text="@string/enter_with_facebook"
             android:textColor="@color/white"
+            android:background="@drawable/button_style"
             android:theme="@style/RaisedButtonDark"
             android:textStyle="bold" />
     </FrameLayout>
