@@ -4,71 +4,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mx.inigofr.specialfriends.view.MainActivity"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    >
+    tools:context="mx.inigofr.specialfriends.view.MainActivity">
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/action_toolbar"
-        />
+        layout="@layout/action_toolbar" />
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/content_search"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:layout_height="40dp"
         android:layout_below="@+id/toolbar"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/layout_border"
         android:weightSum="10"
-        >
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <LinearLayout
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
+            android:paddingEnd="2dp"
+            android:paddingStart="2dp">
+
+            <ImageView
+                android:id="@+id/search_clear"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:onClick="onSearch"
+                android:src="@drawable/ic_search" />
             <EditText
                 android:id="@+id/et_searech_term"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:layout_marginStart="10dp"
-                android:ellipsize="end"
-                android:hint="@string/text_your_search"
-                android:singleLine="true"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:id="@+id/search_view"
-                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal"
-                android:paddingEnd="2dp"
-                android:paddingStart="2dp"
-                >
+                android:layout_marginStart="0dp"
+                android:layout_weight="8"
+                android:background="@null"
+                android:paddingLeft="5dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:textSize="18sp" />
+            <ImageView
+                android:id="@+id/delete_search_button"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:onClick="onDeleteSearch"
+                android:src="@drawable/ic_close"
+                android:visibility="invisible" />
+        </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/delete_search_button"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_close"
-                    android:foreground="?attr/selectableItemBackgroundBorderless"
-                    android:onClick="onDeleteSearch"
-                    android:visibility="invisible"
-                    />
 
-                <ImageView
-                    android:id="@+id/search_clear"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:foreground="?attr/selectableItemBackgroundBorderless"
-                    android:onClick="onSearch"
-                    android:src="@drawable/ic_search"/>
-
-            </LinearLayout>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -76,7 +73,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/content_search"
-        >
+        android:layout_marginTop="20dp">
 
     </android.support.v7.widget.RecyclerView>
 
@@ -85,8 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/recyclerViewFavorites"
-        >
+        android:layout_below="@+id/recyclerViewFavorites">
 
     </android.support.v7.widget.RecyclerView>
 
@@ -95,8 +91,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-
-        />
+        android:visibility="gone" />
 
 </RelativeLayout>
