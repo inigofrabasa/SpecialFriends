@@ -32,7 +32,6 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-        showToolbar("", true);
 
         userName = (TextView) findViewById(R.id.tv_username);
 
@@ -48,17 +47,11 @@ public class UserActivity extends AppCompatActivity {
                     _userModel = userModel;
                     userName.setText(userModel.get_personName());
 
+                    showToolbar("", true);
+
                     try{userBirthday.setText(userModel.get_birthday().toString() != null ? userModel.get_birthday().toString() : "");} catch(NullPointerException ex){}
                     try{userPhone.setText(userModel.get_phoneNumber().toString() != null ? userModel.get_phoneNumber().toString() : "");} catch(NullPointerException ex){}
                     try{userNotes.setText(userModel.get_Notes().toString() != null ? userModel.get_Notes().toString() : "");} catch(NullPointerException ex){}
-                    try{
-                        if(userModel.get_isFavorite()) {
-                            favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_black_24dp));
-                        } else {
-                         favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_border_black_24dp));
-                        }
-                    } catch(NullPointerException ex){}
-
                 }
             }
         }, getIntent().getStringExtra("user_id"));
@@ -95,6 +88,14 @@ public class UserActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(upButton);
 
         favoriteButton = findViewById(R.id.iv_image_favorite);
+        favoriteButton.setVisibility(View.VISIBLE);
+
+        if(_userModel.get_isFavorite()) {
+            favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_white));
+        } else {
+            favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_border_white));
+        }
+
         favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,10 +103,10 @@ public class UserActivity extends AppCompatActivity {
                 viewModel.updateUser(_userModel);
 
                 if(_userModel.get_isFavorite()) {
-                    favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+                    favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_white));
                     Toast.makeText(UserActivity.this, "added to Favorites", Toast.LENGTH_LONG).show();
                 } else {
-                    favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_border_black_24dp));
+                    favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_border_white));
                     Toast.makeText(UserActivity.this, "deleted from Favorites", Toast.LENGTH_LONG).show();
                 }
             }

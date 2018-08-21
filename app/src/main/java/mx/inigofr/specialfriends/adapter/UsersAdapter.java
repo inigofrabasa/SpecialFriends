@@ -58,8 +58,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.RecyclerView
             holder.iconFavorite.setOnClickListener(clickListener);
 
             if(!userModel.get_isFavorite())
-                holder.iconFavorite.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_border_black_24dp));
-            else holder.iconFavorite.setImageDrawable(context.getDrawable(R.drawable.ic_star_black_24dp));
+                holder.iconFavorite.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_border_green));
+            else holder.iconFavorite.setImageDrawable(context.getDrawable(R.drawable.ic_star_green));
         } else {
             holder.headerText.setText(userModel.get_personName());
             holder.headerContainer.setVisibility(View.VISIBLE);
