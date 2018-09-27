@@ -21,7 +21,7 @@ import mx.inigofr.specialfriends.model.UserModel;
  * Created by inigo on 08/08/18.
  */
 
-public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.RecyclerViewHolder> {
+public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<UserModel> userModelList;
     private View.OnClickListener clickListener;
     private Context context;
@@ -33,37 +33,47 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.RecyclerView
     }
 
     @Override
-    public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RecyclerViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.user_item, parent, false));
+    public int getItemViewType(int position) {
+        UserModel userModel = userModelList.get(position);
+        if(!userModel.is_isFirst()){
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if(viewType == 0){
+            return new RecyclerViewHolderItem(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.user_item, parent, false));}
+
+        return new RecyclerViewHolderHeader(LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.header_item, parent, false));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void onBindViewHolder(RecyclerViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         UserModel userModel = userModelList.get(position);
 
         if(!userModel.is_isFirst()){
-            holder.headerContainer.setVisibility(View.GONE);
-            holder.userContainer.setVisibility(View.VISIBLE);
-            holder.nameTextView.setText(userModel.get_personName());
+            ((RecyclerViewHolderItem)holder).nameTextView.setText(userModel.get_personName());
             //if(userModel.get_birthday() != null)
             //    holder.dateTextView.setText(userModel.get_birthday().toString().substring(0, 11));
             //if(userModel.get_imageBitmap() != null)
             //    holder.circleImageProfilePicture.setImageBitmap(userModel.get_imageBitmap());
-            holder.userContainer.setTag(userModel);
-            holder.userContainer.setOnClickListener(clickListener);
+            ((RecyclerViewHolderItem)holder).userContainer.setTag(userModel);
+            ((RecyclerViewHolderItem)holder).userContainer.setOnClickListener(clickListener);
 
-            holder.iconFavorite.setTag(userModel);
-            holder.iconFavorite.setOnClickListener(clickListener);
+            ((RecyclerViewHolderItem)holder).iconFavorite.setTag(userModel);
+            ((RecyclerViewHolderItem)holder).iconFavorite.setOnClickListener(clickListener);
 
             if(!userModel.get_isFavorite())
-                holder.iconFavorite.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_border_green));
-            else holder.iconFavorite.setImageDrawable(context.getDrawable(R.drawable.ic_star_green));
+                ((RecyclerViewHolderItem)holder).iconFavorite.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_star_border_green));
+            else ((RecyclerViewHolderItem)holder).iconFavorite.setImageDrawable(context.getDrawable(R.drawable.ic_star_green));
         } else {
-            holder.headerText.setText(userModel.get_personName());
-            holder.headerContainer.setVisibility(View.VISIBLE);
-            holder.userContainer.setVisibility(View.GONE);
+            ((RecyclerViewHolderHeader)holder).headerText.setText(userModel.get_personName());
         }
     }
 
@@ -98,21 +108,27 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.RecyclerView
         notifyDataSetChanged();
     }
 
-    public class RecyclerViewHolder extends RecyclerView.ViewHolder{
+    public static class RecyclerViewHolderItem extends RecyclerView.ViewHolder{
         private View userContainer;
-        private View headerContainer;
         private TextView nameTextView;
         private CircleImageView circleImageProfilePicture;
         private ImageView iconFavorite;
-        private TextView headerText;
 
-        public RecyclerViewHolder(View view) {
+        public RecyclerViewHolderItem(View view) {
             super(view);
-            userContainer = (View) view.findViewById(R.id.v_user_container);
-            headerContainer = (View) view.findViewById(R.id.v_header_ontainer);
+            userContainer = (View)view.findViewById(R.id.v_user_container);
             nameTextView = (TextView) view.findViewById(R.id.nameTextView);
             circleImageProfilePicture = (CircleImageView)view.findViewById(R.id.circleImageProfilePicture);
             iconFavorite = (ImageView)view.findViewById(R.id.icon_favorite);
+        }
+    }
+
+    public static class RecyclerViewHolderHeader extends RecyclerView.ViewHolder{
+
+        private TextView headerText;
+
+        public RecyclerViewHolderHeader(View view) {
+            super(view);
             headerText = (TextView)view.findViewById(R.id.tv_header);
         }
     }
